@@ -6,12 +6,18 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from flask_cors import CORS
 from flask_migrate import Migrate
-from model import setupdb, Jokes, Riddles, Proverbs, db
+from model import Jokes, Riddles, Proverbs, db
 import re
 import nltk
 from nltk.corpus import stopwords
 from auth.auth import AuthError, requires_auth
 import http.client
+from os import getenv
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 
 
@@ -19,8 +25,17 @@ import http.client
 def createapp(test_config=None):
 
 	app = Flask(__name__)
-	#db=SQLAlchemy(app)
-	setupdb(app)
+	#database_name = "fun_api"
+	database_path = getenv('DATABASE_URL', None)
+
+
+	app.config['SQLALCHEMY_DATABASE_URI'] = database_path
+	app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+	db.app = app
+	db.init_app(app)
+	#migrate.init_app(app, db)
+	db.create_all()
+	
 	CORS(app)
 
 	@app.after_request
@@ -73,7 +88,7 @@ def createapp(test_config=None):
 
 ##################################
 	@app.route("/jokes", methods=["POST"])
-	#@requires_auth('post:jokes')
+	@requires_auth('post:jokes')
 	def post_new_jokes():
 
 		try:
@@ -103,7 +118,7 @@ def createapp(test_config=None):
 
 # ###################################
 	@app.route("/jokes/<id>", methods=["PATCH"])
-	#@requires_auth('patch:jokes')
+	@requires_auth('patch:jokes')
 	def update_jokes(id):
 
 		try:
@@ -139,7 +154,7 @@ def createapp(test_config=None):
 
 ####################################		
 	@app.route("/jokes/<id>", methods=["DELETE"])
-	#@requires_auth('delete:jokes')
+	@requires_auth('delete:jokes')
 	def delete_jokes(id):
 
 		try:
@@ -254,7 +269,7 @@ def createapp(test_config=None):
 # ###################################
 
 	@app.route("/riddle", methods=["POST"])
-	#@requires_auth('post:riddles')
+	@requires_auth('post:riddles')
 	def post_new_riddle():
 
 		try:
@@ -293,7 +308,7 @@ def createapp(test_config=None):
 
 #######################
 	@app.route("/riddle/<id>", methods=["PATCH"])
-	#@requires_auth('patch:riddles')
+	@requires_auth('patch:riddles')
 	def update_riddle(id):
 
 		try:
@@ -329,7 +344,7 @@ def createapp(test_config=None):
 
 ###################################
 	@app.route("/riddle/<id>", methods=["DELETE"])
-	#@requires_auth('delete:riddles')
+	@requires_auth('delete:riddles')
 	def delete_riddle(id):
 
 		try:
@@ -381,7 +396,7 @@ def createapp(test_config=None):
 ##########################
 
 	@app.route("/proverbs", methods=["POST"])
-	#@requires_auth('post:proverbs')
+	@requires_auth('post:proverbs')
 	def post_new_proverbs():
 
 		try:
@@ -412,7 +427,7 @@ def createapp(test_config=None):
 #############################
 
 	@app.route("/proverbs/<id>", methods=["PATCH"])
-	#@requires_auth('patch:proverbs')
+	@requires_auth('patch:proverbs')
 	def update_proverbs(id):
 
 		try:
@@ -441,7 +456,7 @@ def createapp(test_config=None):
 ##################################
 
 	@app.route("/proverbs/<id>", methods=["DELETE"])
-	#@requires_auth('delete:proverbs')
+	@requires_auth('delete:proverbs')
 	def delete_proverbs(id):
 
 		try:

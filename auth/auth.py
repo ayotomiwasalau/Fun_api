@@ -6,11 +6,16 @@ from jose import jwt
 from urllib.request import urlopen
 import ctypes
 import sys
+from os import getenv
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
-AUTH0_DOMAIN = 'fun-api.us.auth0.com'
-ALGORITHMS = 'RS256'
-API_AUDIENCE = 'https://localhost:8080'
+AUTH0_DOMAIN = getenv('AUTH0_DOMAIN', None)
+ALGORITHMS = getenv('ALGORITHMS', None)
+API_AUDIENCE = getenv('API_AUDIENCE', None)
 
 # AUTH0_DOMAIN = environ.get('AUTH0_DOMAIN', 'coffeeshopauth.auth0.com')
 # ALGORITHMS = ['RS256']

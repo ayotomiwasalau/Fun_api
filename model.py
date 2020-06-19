@@ -6,23 +6,23 @@ import json
 
 #DB connect
 
-database_name = "fun_api"
-database_path = "postgres://{}:{}@{}/{}".format('postgres', 'P@ssw0rd123','localhost:5432', database_name)
+# database_name = "fun_api"
+# database_path = "postgres://{}:{}@{}/{}".format('postgres', 'P@ssw0rd123','localhost:5432', database_name)
 
 db=SQLAlchemy()
-migrate = Migrate()
+#migrate = Migrate()
 
 
-def setupdb(app, database_path=database_path):
-	app.config['SQLALCHEMY_DATABASE_URI'] = database_path
-	app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-	db.app = app
-	db.init_app(app)
-	migrate.init_app(app, db)
-	#db.create_all()
-	return db
+# def setupdb(app, database_path=database_path):
+# 	app.config['SQLALCHEMY_DATABASE_URI'] = database_path
+# 	app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# 	db.app = app
+# 	db.init_app(app)
+# 	#migrate.init_app(app, db)
+# 	#db.create_all()
+# 	return db
 
-#Tables	
+####Tables	
 
 class Jokes(db.Model):
 	__tablename__='jokes'

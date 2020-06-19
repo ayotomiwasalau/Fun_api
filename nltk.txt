@@ -1,1 +1,1 @@
-stopwords/english
+stopwords.words('english')

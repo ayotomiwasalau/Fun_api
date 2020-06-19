@@ -6,107 +6,160 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from flask_cors import CORS
 from flask_migrate import Migrate
-from model import setupdb, Jokes, Riddles, Proverbs
+from model import setupdb, Jokes, Riddles, Proverbs, db
 import re
 import nltk
 from nltk.corpus import stopwords
+from auth.auth import AuthError, requires_auth
+import http.client
 
 
 
-app = Flask(__name__)
 
-#db=SQLAlchemy(app)
-setupdb(app)
+def createapp(test_config=None):
 
-CORS(app)
+	app = Flask(__name__)
+	#db=SQLAlchemy(app)
+	setupdb(app)
+	CORS(app)
 
-def main(test_config=None):
+	@app.after_request
+	def after_request(response):
+		response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization,true')
+		response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+		return response
 
-	print("Hello world")
 
+	@app.route('/', methods=['GET'])
+	def get_api_token():
+
+		try:
+
+			data = "Hi, Welcome to Fun API. Get your Jokes, Riddle & Proverbs here. Your API key is stored as 'access_token=<API KEY> within the URL in your browser. You have no idea the awesomeness behind this API endpoint"
+
+			endpoint = {'cUrl these endpoints to access content': {'get your jokes':'http://localhost:8080/jokes', 'get your riddles':'http://localhost:8080/riddles', 'post your answer to riddle':'http://localhost:8080/riddle/<id>/answer', 'get your proverbs':'http://localhost:8080/proverbs'}}
+			
+
+			return jsonify({
+					'success': True,
+					'Intro': data,
+					'Points': endpoint
+					}), 200
+
+		except Exception:
+			abort(404)
 
 #Endpoints for jokes
 ###################################
 	@app.route("/jokes", methods=["GET"])
-	def get_jokes():
+	def get_rand_jokes():
 
-		jokes = Jokes.query.order_by(func.random()).all()
+		try:
 
-		text = re.sub(r'\r\n\r\n' , ' ', jokes[0].joke)
+			jokes = Jokes.query.order_by(func.random()).all()
 
-		return jsonify({
-			'success': True,
-			'id': jokes[0].id,
-			'title': jokes[0].title,
-			'joke': text,
-			})
+			text = re.sub(r'\s+' , ' ', jokes[0].joke)
+
+			return jsonify({
+				'success': True,
+				'id': jokes[0].id,
+				'title': jokes[0].title,
+				'joke': text,
+				}), 200
+
+		except Exception:
+			abort(400)
+
 
 ##################################
 	@app.route("/jokes", methods=["POST"])
+	#@requires_auth('post:jokes')
 	def post_new_jokes():
 
-		new_joke = request.get_json()
-		if not new_joke:
-			abort(422)
+		try:
 
-		title_nw = new_joke.get('title')
-		joke_nw = new_joke.get('joke')
+			new_joke = request.get_json()
+			if not new_joke:
+				abort(404)
 
-		joke_insrt = Jokes(title=title_nw, joke=joke_nw)
-		joke_insrt.insert()
+			title_nw = new_joke.get('title')
+			joke_nw = new_joke.get('joke')
 
-		new_insrt_joke = Jokes.query.order_by(Jokes.id).all()[-1]
-	    
+			joke_insrt = Jokes(title=title_nw, joke=joke_nw)
+			joke_insrt.insert()
 
-		return jsonify({
-			'success': True,
-			'id': new_insrt_joke.id,
-			'title': new_insrt_joke.title,
-			'joke': new_insrt_joke.joke
-			})
+			new_insrt_joke = Jokes.query.order_by(Jokes.id).all()[-1]
+		    
+
+			return jsonify({
+				'success': True,
+				'id': new_insrt_joke.id,
+				'title': new_insrt_joke.title,
+				'joke': new_insrt_joke.joke
+				}), 200
+
+		except Exception:
+			abort(404)
 
 # ###################################
 	@app.route("/jokes/<id>", methods=["PATCH"])
+	#@requires_auth('patch:jokes')
 	def update_jokes(id):
 
-		joke_update = request.get_json()
+		try:
 
-		jokes = Jokes.query.filter(Jokes.id == id).one_or_none()
+			joke_update = request.get_json()
 
-		update_title = joke_update.get('title')
-		update_joke = joke_update.get('joke')
+			if not joke_update:
+				abort(404)
 
-		if update_title:
-			jokes.title=update_title
+			jokes = Jokes.query.filter(Jokes.id == id).one_or_none()
 
-		if update_joke:
-			jokes.joke=update_joke
+			update_title = joke_update.get('title')
+			update_joke = joke_update.get('joke')
 
-		jokes.update()
+			if update_title:
+				jokes.title=update_title
 
-		return jsonify({
-			'success': True,
-			'id': jokes.id,
-			'title': jokes.title,			
-			'jokes': jokes.joke
-			})
+			if update_joke:
+				jokes.joke=update_joke
+
+			jokes.update()
+
+			return jsonify({
+				'success': True,
+				'id': jokes.id,
+				'title': jokes.title,			
+				'joke': jokes.joke
+				}), 200
+
+		except Exception:
+			abort(400)
+
 
 ####################################		
 	@app.route("/jokes/<id>", methods=["DELETE"])
+	#@requires_auth('delete:jokes')
 	def delete_jokes(id):
 
-		jokes = Jokes.query.filter(Jokes.id == id).one_or_none()
+		try:
 
-		if not jokes:
-			abort(404)
+			jokes = Jokes.query.filter(Jokes.id == id).one_or_none()
 
-		else:
-			jokes.delete()		
+			if not jokes:
+				abort(404)
 
-		return jsonify({
-			'success': True,
-			'deleted': id,
-			})
+			else:
+				jokes.delete()		
+
+			return jsonify({
+				'success': True,
+				'deleted': id,
+				}), 200
+
+		except Exception:
+			abort(400)
+
 
 # # #-----------------------------------------
 
@@ -116,225 +169,339 @@ def main(test_config=None):
 	@app.route("/riddle", methods=["GET"])
 	def get_riddle():
 
-		rand_riddles = Riddles.query.order_by(func.random()).all()
+		try:
 
-		text = re.sub(r'\r\n\r\n' , ' ', rand_riddles[0].riddles)
+			rand_riddles = Riddles.query.order_by(func.random()).all()
 
-		return jsonify({
-			'success': True,
-			'id': rand_riddles[0].id,
-			'riddle': text,
-			})
+			text = re.sub(r'\s+' , ' ', rand_riddles[0].riddles)
+
+			return jsonify({
+				'success': True,
+				'id': rand_riddles[0].id,
+				'riddle': text,
+				'answer': 'provide an answer to the riddle using the answer endpoint'
+				}), 200
+
+		except Exception:
+			abort(400)
+
 
 ##################################
 	@app.route("/riddle/<id>/answer", methods=["POST"])
 	def post_answer_to_riddle(id):
 
-		riddle_answer = request.get_json()
+		try:
 
-		print(riddle_answer)
-
-		riddles = Riddles.query.filter(Riddles.id == id).one_or_none()
-
-		print(riddles)
-
-		if not riddles:
-			abort(404)
-
-		res_answer = riddle_answer.get('answer')
-
-		if not res_answer:
-			abort(404)
-
-#.......................
-		
-		def break_string_in_words(string):
-
-			list_of_string = string.split()
-
-			return list_of_string
-
-		response = break_string_in_words(res_answer)
-
-		riddle_answer = break_string_in_words(riddles.answer)
+			riddle_answer = request.get_json()
 
 
-		short_words = list(stopwords.words('english'))
+			riddles = Riddles.query.filter(Riddles.id == id).one_or_none()
 
-		def compare_words(response, riddle_answer, short_words): 
-			for w in set(response):
-				if w in riddle_answer:
-					if w not in short_words:
 
-						status = 'correct'
+			if not riddles:
+				abort(404)
+
+			res_answer = riddle_answer.get('answer')
+
+			if not res_answer:
+				abort(404)
+
+
+			
+			def break_string_in_words(string):
+
+				list_of_string = string.lower().split()
+
+				return list_of_string
+
+			response = break_string_in_words(res_answer)
+
+			riddle_answer = break_string_in_words(riddles.answer)
+
+
+			short_words = list(stopwords.words('english'))
+
+			def compare_words(response, riddle_answer, short_words): 
+				for w in set(response):
+					if w in riddle_answer:
+						if w not in short_words:
+
+							status = 'correct' 
+							
+							return status
 
 					else:
 						status = 'wrong'
 
-			return status
+					return status
 
-		status = compare_words(response, riddle_answer, short_words)
-#............................
+			status_output = compare_words(response, riddle_answer, short_words)
 
-		return jsonify({
-			'success': True,
-			'status' : status,
-			'id': riddles.id,
-			'riddle': riddles.riddles,
-			'your_answer': res_answer,
-			'correct answer': riddles.answer
-			})
+
+			return jsonify({
+				'success': True,
+				'status' : status_output,
+				'id': riddles.id,
+				'riddle': riddles.riddles,
+				'your_answer': res_answer,
+				'correct answer': riddles.answer
+				}), 200
+
+		except Exception:
+			abort(422)
+
 
 # ###################################
 
 	@app.route("/riddle", methods=["POST"])
+	#@requires_auth('post:riddles')
 	def post_new_riddle():
 
-		new_riddle = request.get_json()
-		if not new_riddle:
+		try:
+
+			new_riddle = request.get_json()
+
+			if not new_riddle:
+				abort(422)
+
+
+			nw_riddle = new_riddle.get('riddles')
+			nw_answer = new_riddle.get('answer')
+
+			if not nw_riddle:
+				abort(422)
+
+			if not nw_answer:
+				abort(422)
+
+			Riddles(riddles=nw_riddle, answer=nw_answer).insert()
+
+			new_insrt_riddle = Riddles.query.order_by(Riddles.id).all()[-1]
+		    
+
+			return jsonify({
+				'success': True,
+				'id': new_insrt_riddle.id,
+				'riddles': new_insrt_riddle.riddles,
+				'answer': new_insrt_riddle.answer
+				}), 200
+
+		except Exception:
 			abort(422)
 
-
-		riddle = new_riddle.get('riddle')
-		answer = new_riddle.get('answer')
-
-		Riddles(riddle=riddle, answer=answer).insert()
-
-		new_insrt_riddle = Riddles.query.order_by(Riddles.id).all()[-1]
-	    
-
-		return jsonify({
-			'success': True,
-			'id': new_insrt_riddle.id,
-			'proverb': new_insrt_riddle.proverb
-			})
 
 
 #######################
 	@app.route("/riddle/<id>", methods=["PATCH"])
-	def update_riddle():
+	#@requires_auth('patch:riddles')
+	def update_riddle(id):
 
-		riddle_update = request.get_json()
+		try:
 
-		riddles = Riddle.query.filter(Riddle.id == id).one_or_none()
+			riddle_update = request.get_json()
+			riddles_get = Riddles.query.filter(Riddles.id == id).one_or_none()
 
-		update_riddle = riddle_update.get('riddle')
-		update_answer = riddle_update.get('answer')
+			if not riddle_update:
+				abort(422)
+			else:
+				update_riddle = riddle_update.get('riddle')
+				update_answer = riddle_update.get('answer')
 
-		if update_riddle:
-			riddles.riddle=update_riddle
+			if update_riddle:
 
-		if update_answer:
-			riddles.answer=update_answer
+				riddles_get.riddles=update_riddle
 
-		riddles.update()
+			if update_answer:
+				riddles_get.answer=update_answer
 
-		return jsonify({
-			'success': True,
-			'id': riddles.id,
-			'riddle': riddles.riddle,
-			'answer': riddles.answer
-			})
+				riddles_get.update()
 
-# ###################################
-# 	@app.route("/riddle/<id>", methods=["DELETE"])
-# 	def delete_riddle():
+			return jsonify({
+				'success': True,
+				'id': riddles_get.id,
+				'riddle': riddles_get.riddles,
+				'answer': riddles_get.answer
+				}), 200
 
-#         riddles = Riddles.query.filter(Riddles.id == id).one_or_none()
-
-#         if not riddles:
-#             abort(404)
-#         else:
-#             riddles.delete()		
-
-# 		return jsonify({
-# 			'success': True,
-# 			'deleted': id
-# 			})
+		except Exception:
+			abort(404)
 
 
-# # #---------------------------------------
+###################################
+	@app.route("/riddle/<id>", methods=["DELETE"])
+	#@requires_auth('delete:riddles')
+	def delete_riddle(id):
+
+		try:
+
+			riddles = Riddles.query.filter(Riddles.id == id).one_or_none()
 
 
-# ##Endpoint for proverbs
-# #############################
-# 	@app.route("/proverbs", methods=["GET"])
-# 	def get_proverbs():
+			if not riddles:
+				abort(404)
 
-# 		proverbs = Proverbs.query.order_by(func.random()).all()
+			else:
 
-# 		text = re.sub(r'\r\n\r\n' , ' ', proverbs[0].proverb)
+				riddles.delete()		
 
-# 		return jsonify({
-# 			'success': True,
-# 			'id': proverbs[0].id,
-# 			'proverb': text
-# 			})
+			return jsonify({
+				'success': True,
+				'deleted': id
+				}), 200
 
-# ##########################
+		except Exception:
+			abort(404)
 
-# 	@app.route("/proverbs", methods="POST")
-# 	def post_new_proverbs():
 
-# 		new_proverb = request.get_json()
-# 	    if not new_proverb:
-# 	        abort(422)
 
-# 	    proverb = new_proverb['proverb']
+# #---------------------------------------
 
-# 	    Proverbs(proverb=proverb).insert()
 
-# 	    new_insrt_proverb = Proverbs.query.order_by(Proverbs.id).all()[-1]
-	    
+##Endpoint for proverbs
+#############################
+	@app.route("/proverbs", methods=["GET"])
+	def get_proverbs():
 
-# 		return jsonify({
-# 			'success': True,
-# 			'id': new_insrt_proverb.id,
-# 			'proverb': new_insrt_proverb.proverb
-# 			})
+		try:
 
-# #############################
+			proverbs = Proverbs.query.order_by(func.random()).all()
 
-# 	@app.route("/proverbs/<id>", methods="PATCH")
-# 	def update_proverbs():
+			text = re.sub(r'\s+' , ' ', proverbs[0].proverb)
 
-# 		proverb_update = request.get_json()
+			return jsonify({
+				'success': True,
+				'id': proverbs[0].id,
+				'proverb': text
+				}), 200
 
-# 		proverbs = Proverbs.query.filter(Proverbs.id == id).one_or_none()
+		except Exception:
+			abort(422)
 
-# 		update_proverbs = proverbs_update.get('proverb')
 
-# 		if update_proverbs:
-# 			proverbs.proverb=update_proverbs
+##########################
 
-# 		proverbs.update()
+	@app.route("/proverbs", methods=["POST"])
+	#@requires_auth('post:proverbs')
+	def post_new_proverbs():
 
-# 		return jsonify({
-# 			'success': True,
-# 			'id': proverbs.id,
-# 			'proverb': proverbs.proverb
-# 			})
-# ##################################
+		try:
 
-# 	@app.route("/proverbs/<id>", methods="DELETE")
-# 	def delete_proverbs():
+			new_proverb = request.get_json()
 
-#         proverbs = Proverbs.query.filter(Proverbs.id == id).one_or_none()
+			if not new_proverb:
+				abort(400)
 
-#         if not proverbs:
-#             abort(404)
-#         else:
-#             proverbs.delete()		
+			proverb_input = new_proverb.get('proverb')
 
-# 		return jsonify({
-# 			'success': True,
-# 			'deleted': id
-# 			})
+			Proverbs(proverb=proverb_input).insert()
+
+
+			new_insrt_proverb = Proverbs.query.order_by(Proverbs.id).all()[-1]
+		    
+
+			return jsonify({
+				'success': True,
+				'id': new_insrt_proverb.id,
+				'proverb': new_insrt_proverb.proverb
+				}), 200
+
+		except Exception:
+			abort(422)
+
+
+#############################
+
+	@app.route("/proverbs/<id>", methods=["PATCH"])
+	#@requires_auth('patch:proverbs')
+	def update_proverbs(id):
+
+		try:
+
+			proverb_update = request.get_json()
+
+
+			proverb_s = Proverbs.query.filter(Proverbs.id == id).one_or_none()
+
+			update_proverbs = proverb_update.get('proverb')
+
+			if update_proverbs:
+				proverb_s.proverb=update_proverbs
+
+			proverb_s.update()
+
+			return jsonify({
+				'success': True,
+				'id': proverb_s.id,
+				'proverb': proverb_s.proverb
+				}), 200
+
+		except Exception:
+			abort(404)
+
 ##################################
 
+	@app.route("/proverbs/<id>", methods=["DELETE"])
+	#@requires_auth('delete:proverbs')
+	def delete_proverbs(id):
+
+		try:
+
+			proverbs = Proverbs.query.filter(Proverbs.id == id).one_or_none()
+
+			if not proverbs:
+			    abort(404)
+			else:
+			    proverbs.delete()		
+
+			return jsonify({
+				'success': True,
+				'deleted': id
+				}), 200
+
+		except Exception:
+			abort(404)
+
+#################################
+		'''
+	Error Handling
+	'''
+	@app.errorhandler(422)
+	def unprocessable(error):
+	    return jsonify({
+	                    "success": False,
+	                    "error": 422,
+	                    "message": "unprocessable"
+	                    }), 422
+
+
+	@app.errorhandler(404)
+	def not_found(error):
+	    return jsonify({
+	                    "success": False,
+	                    "error": 404,
+	                    "message": "resource not found"
+	                    }), 404
+
+
+	@app.errorhandler(401)
+	def unauthorized(error):
+	    return jsonify({
+	                    "success": False,
+	                    "error": 401,
+	                    "message": "Unauthorized"
+	                    }), 401
+
+
+	@app.errorhandler(400)
+	def bad_request(error):
+	    return jsonify({
+	                    "success": False,
+	                    "error": 400,
+	                    "message": "Bad Request"
+	                    }), 400
 	return app
 
-APP=main()
+APP=createapp()
 
 if __name__ == '__main__':
     APP.run(host='0.0.0.0', port=8080, debug=True)

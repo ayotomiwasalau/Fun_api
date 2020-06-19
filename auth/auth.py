@@ -8,9 +8,9 @@ import ctypes
 import sys
 
 
-AUTH0_DOMAIN = 'coffeeshopauth.auth0.com'
+AUTH0_DOMAIN = 'fun-api.us.auth0.com'
 ALGORITHMS = 'RS256'
-API_AUDIENCE = 'coffee_shop_auth_api'
+API_AUDIENCE = 'https://localhost:8080'
 
 # AUTH0_DOMAIN = environ.get('AUTH0_DOMAIN', 'coffeeshopauth.auth0.com')
 # ALGORITHMS = ['RS256']
@@ -78,20 +78,28 @@ def check_permissions(permission, payload):
     '''
 
     # raises an AuthError if permissions are not included in the payload
-    if 'permissions' not in payload:
-        raise AuthError({
-            'code': 'invalid_claims',
-            'description': 'Permissions not included in JWT'
-            }, 400)
+    try:
+    	if 'permissions' not in payload:
+    		raise AuthError({
+	            'code': 'invalid_claims',
+	            'description': 'Permissions not included in JWT'
+	            }, 401)
+
+    except Exception:
+    	abort(401)
 
     # raise an AuthError if the requested permission string is not
     # in the payload permissions array
-    if permission not in payload['permissions']:
-        raise AuthError({
-            'code': 'forbidden',
-            'description': 'Permission not found'
-        }, 401)
-    # return true otherwise
+    try:
+    	if permission not in payload['permissions']:
+    		raise AuthError({
+	            'code': 'forbidden',
+	            'description': 'Permission not found'
+	        }, 401)
+
+    except Exception:
+    	abort(401)
+
     return True
 
 
@@ -130,6 +138,7 @@ def get_rsa_key(token):
                 'description': 'Unable to find the appropriate key.'
             }, 401)
         return rsa_key
+
     except Exception:
         raise AuthError({
                 'code': 'invalid_header',
@@ -180,6 +189,7 @@ def requires_auth(permission=''):
             payload = verify_decode_jwt(token)
             check_permissions(permission, payload)
             return f(*args, **kwargs)
-
+        # Renaming the function name:
+        wrapper.__name__ = f.__name__
         return wrapper
     return requires_auth_decorator

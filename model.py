@@ -10,15 +10,17 @@ database_name = "fun_api"
 database_path = "postgres://{}:{}@{}/{}".format('postgres', 'P@ssw0rd123','localhost:5432', database_name)
 
 db=SQLAlchemy()
+migrate = Migrate()
+
 
 def setupdb(app, database_path=database_path):
 	app.config['SQLALCHEMY_DATABASE_URI'] = database_path
 	app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 	db.app = app
 	db.init_app(app)
-	migrate = Migrate(app, db)
+	migrate.init_app(app, db)
 	#db.create_all()
-	return db	
+	return db
 
 #Tables	
 
@@ -75,8 +77,8 @@ class Proverbs(db.Model):
 	id = Column(Integer, primary_key=True)
 	proverb = Column(String)
 
-	def __init__(self, proverbs):
-		self.proverbs = joke
+	def __init__(self, proverb):
+		self.proverb = proverb
 
 	def insert(self):
 		db.session.add(self)

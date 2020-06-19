@@ -8,7 +8,7 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from model import Jokes, Riddles, Proverbs, db
 import re
-import nltk
+#import nltk
 #from nltk.corpus import stopwords
 from auth.auth import AuthError, requires_auth
 import http.client

@@ -2,7 +2,7 @@ jokes_table_insert = ("""INSERT INTO jokes(id, title, joke)
 						VALUES(%s, %s, %s)
 						ON CONFLICT DO NOTHING;
 						""")
-riddles_table_insert = ("""INSERT INTO riddles(id, riddle, answer)
+riddles_table_insert = ("""INSERT INTO riddles(id, riddles, answer)
 						VALUES(%s, %s, %s)
 						ON CONFLICT DO NOTHING;
 						""")

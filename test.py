@@ -5,6 +5,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app import createapp
 from model import setupdb, Jokes, Riddles, Proverbs, db
+from os import getenv
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 
@@ -17,6 +22,10 @@ class fun_api(unittest.TestCase):
 		self.database_name = "fun_api"
 		self.database_path = "postgres://{}:{}@{}/{}".format('postgres', 'P@ssw0rd123','localhost:5432', self.database_name)
 		setupdb(self.app, self.database_path)
+		app.config['SQLALCHEMY_DATABASE_URI'] = database_path
+		app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+		db.app = app
+	
 
 
 		with self.app.app_context():

@@ -30,7 +30,7 @@ def process_riddles_csv(cur, conn, filepath):
 
 	df_riddle = pd.read_csv(filepath)
 
-	riddles_data = df_riddle[['id', "riddle", "answer"]]#.values[0].tolist()
+	riddles_data = df_riddle[['id', "riddles", "answer"]]#.values[0].tolist()
 
 	for i, row in riddles_data.iterrows():
 
@@ -70,7 +70,7 @@ def process_proverbs_csv(cur, conn, filepath):
 
 def main():
 
-	conn = psycopg2.connect("host=localhost dbname=fun_api user=postgres password=P@ssw0rd123 port=5432")
+	conn = psycopg2.connect("host=ec2-52-72-65-76.compute-1.amazonaws.com dbname=d7p8ct5q8q2oc8 user=jpvkswecmkjwcw password=1154f7ecfd8db15277c99fdcb299d2d8b344577f985fecdcf8ada01503f6cbc8 port=5432")
 	cur = conn.cursor()
 
 	process_jokes_csv(cur, conn, filepath = "api_data/Jokes.csv")

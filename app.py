@@ -78,7 +78,7 @@ def createapp(test_config=None):
 
 ##################################
     @app.route("/jokes", methods=["POST"])
-    @requires_auth('post:jokes')
+    #@requires_auth('post:jokes')
     def post_new_jokes():
         
         try:
@@ -145,7 +145,7 @@ def createapp(test_config=None):
 # ###################################	
 
     @app.route("/jokes/<id>", methods=["DELETE"])
-    @requires_auth('delete:jokes')
+    #@requires_auth('delete:jokes')
     def delete_jokes(id):
         
         try:
@@ -253,7 +253,7 @@ def createapp(test_config=None):
 # ###################################
 
     @app.route("/riddle", methods=["POST"])
-    @requires_auth('post:riddles')
+    #@requires_auth('post:riddles')
     def post_new_riddle():
         try:
 
@@ -433,7 +433,7 @@ def createapp(test_config=None):
 ##################################
 
     @app.route("/proverbs/<id>", methods=["DELETE"])
-    @requires_auth('delete:proverbs')
+    #@requires_auth('delete:proverbs')
     def delete_proverbs(id):
 
         try:

@@ -34,7 +34,7 @@ def createapp(test_config=None):
 	db.app = app
 	db.init_app(app)
 	#migrate.init_app(app, db)
-	db.create_all()
+	#db.create_all()
 	
 	CORS(app)
 
@@ -52,7 +52,7 @@ def createapp(test_config=None):
 
 			data = "Hi, Welcome to Fun API. Get your Jokes, Riddle & Proverbs here. Your API key is stored as 'access_token=<API KEY> within the URL in your browser. You have no idea the awesomeness behind this API endpoint"
 
-			endpoint = {'cUrl these endpoints to access content': {'get your jokes':'http://localhost:8080/jokes', 'get your riddles':'http://localhost:8080/riddles', 'post your answer to riddle':'http://localhost:8080/riddle/<id>/answer', 'get your proverbs':'http://localhost:8080/proverbs'}}
+			endpoint = {'cUrl these endpoints to access content': {'get your jokes':'https://fun-apis.herokuapp.com/jokes', 'get your riddles':'https://fun-apis.herokuapp.com/riddles', 'post your answer to riddle':'https://fun-apis.herokuapp.com/riddle/<id>/answer', 'get your proverbs':'https://fun-apis.herokuapp.com/proverbs'}}
 			
 
 			return jsonify({

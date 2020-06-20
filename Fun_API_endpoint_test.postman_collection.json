@@ -1,0 +1,1208 @@
+{
+	"info": {
+		"_postman_id": "a907b493-c799-4e24-a489-70754324c8db",
+		"name": "API_endpoint_test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "general_user",
+			"item": [
+				{
+					"name": "get jokes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e6eed297-2d56-4f72-ad41-fe02c2e7a562",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/jokes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"jokes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get riddles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c3acf117-1a4c-4e0d-a1be-d6fe49d4ee0c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/riddle",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"riddle"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get proverbs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3ce7ed4f-058c-431d-bd81-2de5ddba5b97",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/proverbs",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"proverbs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post riddle_answer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a34f760c-7679-4f3e-9621-c55190e22d2d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"answer\": \"fingers\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/riddle/4/answer",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"riddle",
+								"4",
+								"answer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post jokes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0cdd5723-c886-4315-a497-a50502f5251a",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Aha aha!\",\n\t\"joke\": \"If i hang my watch in the air, what do I have, Airtime. Dont leave me\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/jokes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"jokes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post riddles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "47b1ecb6-f3b4-4680-8f3d-e131a46b6d59",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t'riddles':'what do they call cash liquid?', \n\t'answer':'it makes you float'\n\t\n}"
+						},
+						"url": {
+							"raw": "{{host}}/riddle",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"riddle"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post proverbs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "584bbf1b-feb0-433f-baab-b2ed4b3f3c76",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t'proverb':'The goat that refuses to flee when he see a boil pot of water, should be ready to take a hot bath'\n\t\n}"
+						},
+						"url": {
+							"raw": "{{host}}/proverbs",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"proverbs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patch jokes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c05cfd4d-ca3d-4b30-9a9a-a2fd30170b9d",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t'title':'laugh', \n\t'joke':'two men walked into the bar, one named Peter, one named Paul'\n}"
+						},
+						"url": {
+							"raw": "{{host}}/jokes/22",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"jokes",
+								"22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patch riddles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2a4a1745-2f83-4cb3-baaa-8a3baf9a0a89",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t'riddle':'what do they call cash liquid?', \n\t'answer': 'Because it keeps you rest a-shored'\n}"
+						},
+						"url": {
+							"raw": "{{host}}/riddle/22",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"riddle",
+								"22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patch proverbs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "362995f9-0f0d-428f-aa89-fed45c31fd99",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t'proverb': 'the apple that falls all the branch shows he is ripe'\n}"
+						},
+						"url": {
+							"raw": "{{host}}/proverbs/22",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"proverbs",
+								"22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete jokes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3e8fd01c-a9a9-40d6-b6bb-7512f7976608",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/jokes/22",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"jokes",
+								"22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete riddles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0025a721-452b-443e-877f-4deb35b58c5f",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/riddle/22",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"riddle",
+								"22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete proverbs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9fc64de0-64c5-45f3-b9a5-88ff35634e72",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/proverbs/22",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"proverbs",
+								"22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d049ef78-5bca-4c62-995a-0ce1ef89a34c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}",
+							"host": [
+								"{{host}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InVKYk5qcnZ0NE45VWEtTzctWEdsQiJ9.eyJpc3MiOiJodHRwczovL2Z1bi1hcGkudXMuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVlZWI3MGU0ZDY4NTQ0MGJkMzBiOTQxNiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjgwODAiLCJpYXQiOjE1OTI2NjkxMzQsImV4cCI6MTU5Mjc0MTEzNCwiYXpwIjoiZDIyREFjSG9Lb2lpOTRqbGY2Q1p2eUlxMXVmanl1NEYiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbXX0.U8wh5C7aXiWOtLTRJ-ENOTCsKrmX3zEVeZdDafdWGXgF-72A7If9I11u2X9BFCd1p1zbrSO3Fm_iTTp11C0q0z-vLxb9JQKTjt-ylml7BFKOu56wKoLz-zGMOMFDUMKNImHiLf0BYXkpqfcumzGcoEmq-qM5TRrHSZ-1YxJ0GdYrz6xL-fzSkYwi-nYzcHoWzTpgGTU5oWpvglYudHK5JxW6ZTo7-gN-apJNXqNOmkuD0kTau1mY6nLCwTiGzvgjhh7DjKF8hSZhxiqJ-JCBW3hsapFdpaiXSCaFkx6YULhuPqKJ1au7T2KGI8Oa7uSBU_5TP37GQMI0KEnnU52l6g",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "58666f6d-94d5-4ac7-9285-14ff238cee6f",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ca50803f-bf21-4311-bdb7-228670e19680",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "get jokes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0b57af46-cd54-4d54-80b4-bccafbd8020a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/jokes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"jokes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get riddles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8f18c90f-3cca-41d4-801e-34c26629e75d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/riddle",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"riddle"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get proverbs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "32f81a5f-d5b3-48dd-bd29-a517a0f75527",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/proverbs",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"proverbs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post riddles_answer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "37b4face-8e88-48b1-ac54-162af4005835",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"answer\": \"finger\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/riddle/7/answer",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"riddle",
+								"7",
+								"answer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post jokes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "179c6104-ea47-49d5-8685-260b7a5e9443",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains joke string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.joke).to.be.an('string')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Aha aha!\",\n\t\"joke\": \"If i hang my watch in the air, what do I have, Airtime. Dont leave me\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/jokes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"jokes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post riddles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f21746c1-e3ed-49cc-8167-9a602c8379b2",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains riddles string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.riddles).to.be.an('string')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"riddles\":\"what do they call cash liquid?\", \n\t\"answer\": \"Because it makes you rest-ashored\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/riddle",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"riddle"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post proverbs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8ea0b05a-3631-4f75-90e1-c99c8d7910ab",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains proverb string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.proverb).to.be.an('string')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"proverb\": \"The goat that refuses to flee when he see a boil pot of water, should be ready to take a hot bath\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/proverbs",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"proverbs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patch jokes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d0fbd8d9-4feb-4ed1-81fc-ea8c8c4563b6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains joke string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.joke).to.be.an('string')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"joke\": \"What has a long tail and two branches? Mr Y asked\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/jokes/15",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"jokes",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patch riddles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a46a7a8a-f292-410f-b121-068a1aa91c96",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains riddle string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.riddle).to.be.an('string')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"riddles\":\"what do they call cash liquid?\", \n\t\"answer\": \"Because it keeps you rest a-shored\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/riddle/15",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"riddle",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patch proverbs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5e83027b-eb44-4533-b790-cdbd0739026a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains proverb string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.proverb).to.be.an('string')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"proverb\": \"the apple that falls all the branch shows he is ripe\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/proverbs/15",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"proverbs",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete jokes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d56f2383-bebf-4bbf-a4d4-343a62e6f68b",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/jokes/23",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"jokes",
+								"23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete riddles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ca835e7b-0e8b-40dc-8f93-9a4ab34a95c7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/riddle/23",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"riddle",
+								"23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete proverbs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b801f46b-fdbd-46de-90b5-3bf2cccbeb9c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/proverbs/23",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"proverbs",
+								"23"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InVKYk5qcnZ0NE45VWEtTzctWEdsQiJ9.eyJpc3MiOiJodHRwczovL2Z1bi1hcGkudXMuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVlZWM0MzcwYTJmMWU4MDAxNWJiOGUzOSIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjgwODAiLCJpYXQiOjE1OTI2Njg5NTMsImV4cCI6MTU5Mjc0MDk1MywiYXpwIjoiZDIyREFjSG9Lb2lpOTRqbGY2Q1p2eUlxMXVmanl1NEYiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTpqb2tlcyIsImRlbGV0ZTpwcm92ZXJicyIsImRlbGV0ZTpyaWRkbGVzIiwiZ2V0Ompva2VzIiwiZ2V0OnByb3ZlcmJzIiwiZ2V0OnJpZGRsZXMiLCJwYXRjaDpqb2tlcyIsInBhdGNoOnByb3ZlcmJzIiwicGF0Y2g6cmlkZGxlcyIsInBvc3Q6am9rZXMiLCJwb3N0OnByb3ZlcmJzIiwicG9zdDpyaWRkbGVzIiwicG9zdDpyaWRkbGVzX2Fuc3dlciJdfQ.eQy2mjCp9lhagS2qWXciOaF8rZRNcoObANeyHnH_LHFfcfNIgHfbdQ93y84ed1bUlFr1vz7r2qocKjv1BayuIdWm_7fCZgZUau04MMjglNGDcoXROHxZWGADy6z0j8StF-qqyqUi6PBkmqJVjWypAR2YdDbJ04QtuEMHBOFSD4N-2wiKiyPviCZTI-I8HzusbU_EMCOjWoyZu9F40bqRqKrfCY7NmSoC6nr5TWb46r4cpfN47coXCIhRnLj1wsCfyzRVjkUBCeV-p27leTtWKwUAKpIFiV-BfkSmceMLR7uBv6fmOuoHWLneuZUtsmyp-UgbO9F421RTEKqdSahSrA",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "abeb9c60-3595-46e0-b309-0073e9d638d9",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "94183cdc-0207-4e24-aa1f-4e13a72260f9",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "e8e756de-4788-40de-858e-6cbef9688a91",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a95752c0-d85a-42cc-aed8-05141b731dc6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "10ae1d9e-11cc-4dc9-9b7c-9bd91c9cc6e3",
+			"key": "host",
+			"value": "https://fun-apis.herokuapp.com/",
+			"type": "string"
+		}
+	]
+}

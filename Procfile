@@ -1,1 +1,1 @@
-web:gunicorn fun-apis:app
+web: gunicorn app:app

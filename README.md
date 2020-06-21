@@ -10,7 +10,7 @@ It was built to enable you have fun and also learn. Its a medium through which y
 
 ## Application build
 
-You can find the source file for the API in this github repo. 
+You can find the source file for the API in this github repo.
 
 Download the files and run on your development server to understand how the API works
 
@@ -28,13 +28,21 @@ The api is currently hosted on Heroku and accessed via this URL
 https://fun-apis.herokuapp.com/
 
 ```
+
+## Endpoint authentication and use
 There are the available endpoints for use.
 
-To access the endpoints one must register as a user for get access token however it is not compulsory for a general user but it is for admin users
+To access the endpoints one must register as a user for get access token for authentication
 
 - Register for access token
 
-[Get access token - link](https://fun-api.us.auth0.com/authorize?audience=https://localhost:8080&scope=SCOPE&response_type=token&client_id=d22DAcHoKoii94jlf6CZvyIq1ufjyu4F&redirect_uri=https://fun-apis.herokuapp.com&state=STATE)
+[login & get access token - link](https://fun-api.us.auth0.com/authorize?audience=https://localhost:8080&scope=SCOPE&response_type=token&client_id=d22DAcHoKoii94jlf6CZvyIq1ufjyu4F&redirect_uri=https://fun-apis.herokuapp.com&state=STATE)
+
+```bash
+NB
+Temporary user accounts with general and admin privileges have been created to login and use provided access token to test the endpoint. Check file "Test_credentials" in this github repo or you can choose to sign up.
+Alternatively there are temporary bearer token in "testconfig.py" in the repo as well
+```
 
 - Access endpoints through Curl or Postman with access token
 
@@ -42,29 +50,35 @@ To access the endpoints one must register as a user for get access token however
 
 - get jokes
 	* Reload to see new joke
-```bash 
+```bash
 GET https://fun-apis.herokuapp.com/jokes
+curl -H "Authorization: Bearer <ACCESS_TOKEN>" https://fun-apis.herokuapp.com/jokes
 ```
 - get riddle
 	* Reload to see new riddle
-```bash 
+```bash
 GET https://fun-apis.herokuapp.com/riddle
-``` 
-- post answer to riddle 
+curl -H "Authorization: Bearer <ACCESS_TOKEN>" https://fun-apis.herokuapp.com/riddle
+```
+- post answer to riddle
 	* attach answer to a json file. {"answer": XXX}
-```bash 
+```bash
 POST https://fun-apis.herokuapp.com/riddle/<id>/answer
+ex.
+curl -X POST -H "Authorization: Bearer <ACCESS_TOKEN>" -H "Content-Type: application/JSON" -d '{ "answer":"fingers"}' https://fun-apis.herokuapp.com/riddle/4/answer
+
 ```
 - get proverbs
-	* * Reload to see new proverb
-```bash 
+	* Reload to see new proverb
+```bash
 GET https://fun-apis.herokuapp.com/proverbs
+curl -H "Authorization: Bearer <ACCESS_TOKEN>" https://fun-apis.herokuapp.com/proverbs
 ```
 
 2) A admin user has permission to access the following endpoints, including permissions of a general user
 
 - post jokes, riddle and proverbs - attach joke, riddle or proverbs to a json file
-```bash 
+```bash
 POST https://fun-apis.herokuapp.com/jokes
 POST https://fun-apis.herokuapp.com/riddle
 POST https://fun-apis.herokuapp.com/proverbs

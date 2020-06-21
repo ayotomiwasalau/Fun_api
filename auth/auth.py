@@ -74,8 +74,6 @@ def get_token_auth_header():
     except Exception:
         abort(401)
 
-
-
 def check_permissions(permission, payload):
     '''
     Function for authenticating permission of the user
@@ -89,26 +87,26 @@ def check_permissions(permission, payload):
 
     # raises an AuthError if permissions are not included in the payload
     try:
-    	if 'permissions' not in payload:
-    		raise AuthError({
-	            'code': 'invalid_claims',
-	            'description': 'Permissions not included in JWT'
-	            }, 401)
+        if 'permissions' not in payload:
+            raise AuthError({
+                'code': 'invalid_claims',
+                'description': 'Permissions not included in JWT'
+                }, 401)
 
     except Exception:
-    	abort(401)
+        abort(401)
 
     # raise an AuthError if the requested permission string is not
     # in the payload permissions array
     try:
-    	if permission not in payload['permissions']:
-    		raise AuthError({
-	            'code': 'forbidden',
-	            'description': 'Permission not found'
-	        }, 401)
+        if permission not in payload['permissions']:
+            raise AuthError({
+                'code': 'forbidden',
+                'description': 'Permission not found'
+            }, 401)
 
     except Exception:
-    	abort(401)
+        abort(401)
 
     return True
 

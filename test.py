@@ -133,7 +133,7 @@ class fun_api(unittest.TestCase):
 # ##Deleting jokes***
 
     def test_deleting_joke(self):
-        res = self.client().delete('/jokes/25', headers=self.endptheader)
+        res = self.client().delete('/jokes/24', headers=self.endptheader)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -243,7 +243,7 @@ class fun_api(unittest.TestCase):
 # Deleting riddle
 
     def test_deleting_riddle(self):
-        res = self.client().delete('/riddle/25', headers=self.endptheader)
+        res = self.client().delete('/riddle/24', headers=self.endptheader)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -323,7 +323,7 @@ class fun_api(unittest.TestCase):
 # Deleting proverbs
 # **
     def test_deleting_proverb(self):
-        res = self.client().delete('/proverbs/25', headers=self.endptheader)
+        res = self.client().delete('/proverbs/24', headers=self.endptheader)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -536,7 +536,7 @@ class fun_api(unittest.TestCase):
 
 # delete jokes
     def test_admin_deleting_joke(self):
-        res = self.client().delete('/jokes/23', headers=self.adminheaders)
+        res = self.client().delete('/jokes/27', headers=self.adminheaders)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -597,7 +597,7 @@ class fun_api(unittest.TestCase):
 
 # delete riddle
     def test_admin_deleting_riddle(self):
-        res = self.client().delete('/riddle/23', headers=self.adminheaders)
+        res = self.client().delete('/riddle/21', headers=self.adminheaders)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -641,7 +641,7 @@ class fun_api(unittest.TestCase):
 
 # delete proverbs
     def test_admin_deleting_proverb(self):
-        res = self.client().delete('/proverbs/23', headers=self.adminheaders)
+        res = self.client().delete('/proverbs/27', headers=self.adminheaders)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)

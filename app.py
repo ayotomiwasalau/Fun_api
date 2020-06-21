@@ -193,7 +193,6 @@ def createapp(test_config=None):
         except Exception:
             abort(400)
 
-
 ##################################
     @app.route("/riddle/<id>/answer", methods=["POST"])
     @requires_auth('post:riddles_answer')

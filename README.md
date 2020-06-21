@@ -40,8 +40,8 @@ To access the endpoints one must register as a user for get access token for aut
 
 ```bash
 NB
-Temporary user accounts with general and admin privileges have been created to login and use provided access token to test the endpoint. Check file "Test_credentials" in this github repo or you can choose to sign up.
-Alternatively there are temporary bearer token in "testconfig.py" in the repo as well
+Temporary user accounts with general and admin privileges have been created to login to test the endpoints. Check file "Test_credentials" in this github repo or you can choose to sign up.
+Alternatively there are temporary bearer token in "testconfig.py" in the repo
 ```
 
 - Access endpoints through Curl or Postman with access token

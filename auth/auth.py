@@ -40,35 +40,40 @@ def get_token_auth_header():
     '''
     Obtain the access token from the authorization header
     '''
-    # attempt to get the header from the request
-    auth = request.headers.get('Authorization', None)
 
-    # raise an AuthError if no header is present
-    if not auth:
-        raise AuthError({
-            'code': 'authorization_header_missing',
-            'description': 'Authorization header is expected.'
+    try:
+        # attempt to get the header from the request
+        auth = request.headers.get('Authorization', None)
+
+        # raise an AuthError if no header is present
+        if not auth:
+            raise AuthError({
+                'code': 'authorization_header_missing',
+                'description': 'Authorization header is expected.'
+                    }, 401)
+
+        # attempt to split bearer and the token
+        parts = auth.split()
+
+        # raise an AuthError if the header is malformed
+        if parts[0].lower() != 'bearer':
+            raise AuthError({
+                'code': 'invalid_header',
+                'description': 'Authorization header must start with "Bearer".'
                 }, 401)
 
-    # attempt to split bearer and the token
-    parts = auth.split()
+        elif len(parts) > 2:
+            raise AuthError({
+                'code': 'invalid_header',
+                'description': 'Authorization header must be bearer token.'
+                }, 401)
 
-    # raise an AuthError if the header is malformed
-    if parts[0].lower() != 'bearer':
-        raise AuthError({
-            'code': 'invalid_header',
-            'description': 'Authorization header must start with "Bearer".'
-            }, 401)
+        # return the token part of the header
+        token = parts[1]
+        return token
+    except Exception:
+        abort(401)
 
-    elif len(parts) > 2:
-        raise AuthError({
-            'code': 'invalid_header',
-            'description': 'Authorization header must be bearer token.'
-            }, 401)
-
-    # return the token part of the header
-    token = parts[1]
-    return token
 
 
 def check_permissions(permission, payload):

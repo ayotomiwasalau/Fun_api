@@ -45,16 +45,27 @@ def createapp(test_config=None):
     @app.route('/', methods=['GET'])
     def get_api_token():
         try:
-            data = "Hi, Welcome to Fun API. Get your Jokes, Riddle & Proverbs here. You have no idea the awesomeness behind this API endpoint"
+            data = "Hi, Welcome to Fun API. Get your Jokes, Riddle & Proverbs \
+                 here.You have no idea the awesomeness behind\
+                      this API endpoint"
             endpoint = {
                 'Register here to get access_token': {
-                    'links': 'https://fun-api.us.auth0.com/authorize?audience=https://localhost:8080&scope=SCOPE&response_type=token&client_id=d22DAcHoKoii94jlf6CZvyIq1ufjyu4F&redirect_uri=https://fun-apis.herokuapp.com&state=STATE',
-                    'info': 'Your API key is stored as access_token=<API KEY> in your return URL '},
+                    'links': 'https://fun-api.us.auth0.com/authorize\
+                        ?audience=https://localhost:8080&scope=SCOPE&\
+                            response_type=token&client_id=d22DAcHoKoi\
+                                i94jlf6CZvyIq1ufjyu4F&\redirect_uri=\
+                                    https://fun-apis.herokuapp.com\
+                                        &state=STATE',
+                    'info': 'Your API key is stored as \
+                        access_token=<API KEY> in your return URL '},
                 'cUrl these endpoints to access content': {
                     'get your jokes': 'https://fun-apis.herokuapp.com/jokes',
-                    'get your riddles': 'https://fun-apis.herokuapp.com/riddles',
-                    'post your answer to riddle': 'https://fun-apis.herokuapp.com/riddle/<id>/answer',
-                    'get your proverbs': 'https://fun-apis.herokuapp.com/proverbs'
+                    'get your riddles': 'https://fun-apis.\
+                        herokuapp.com/riddle',
+                    'post your answer to riddle': 'https://fun-apis.\
+                        herokuapp.com/riddle/<id>/answer',
+                    'get your proverbs': 'https://fun-apis.\
+                        herokuapp.com/proverbs'
                     }
                     }
 
@@ -181,13 +192,14 @@ def createapp(test_config=None):
 
             rand_riddles = Riddles.query.order_by(func.random()).all()
 
-            text = re.sub(r'\s+' , ' ', rand_riddles[0].riddles)
+            text = re.sub(r'\s+', ' ', rand_riddles[0].riddles)
 
             return jsonify({
                 'success': True,
                 'id': rand_riddles[0].id,
                 'riddle': text,
-                'answer': 'provide an answer to the riddle using the answer endpoint'
+                'answer': 'provide an answer to the\
+                     riddle using the answer endpoint'
                 }), 200
 
         except Exception:
@@ -240,7 +252,7 @@ def createapp(test_config=None):
 
             return jsonify({
                 'success': True,
-                'status' : status_output,
+                'status': status_output,
                 'id': riddles.id,
                 'riddle': riddles.riddles,
                 'your_answer': res_answer,
@@ -358,7 +370,7 @@ def createapp(test_config=None):
 
             proverbs = Proverbs.query.order_by(func.random()).all()
 
-            text = re.sub(r'\s+' , ' ', proverbs[0].proverb)
+            text = re.sub(r'\s+', ' ', proverbs[0].proverb)
 
             return jsonify({
                 'success': True,
@@ -412,7 +424,7 @@ def createapp(test_config=None):
             update_proverbs = proverb_update.get('proverb')
 
             if update_proverbs:
-                proverb_s.proverb=update_proverbs
+                proverb_s.proverb = update_proverbs
 
             proverb_s.update()
 

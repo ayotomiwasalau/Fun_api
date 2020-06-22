@@ -7,7 +7,8 @@ from dotenv import load_dotenv
 import sys
 from app import createapp
 from model import Jokes, Riddles, Proverbs, db
-from testconfig import accesstoken_generaluser, accesstoken_adminuser, accesstoken_endpointcheck
+from testconfig import accesstoken_generaluser,\
+    accesstoken_adminuser, accesstoken_endpointcheck
 
 load_dotenv()
 
@@ -30,13 +31,13 @@ class fun_api(unittest.TestCase):
             self.db.app = self.app
             self.endptheader = {
                 'Authorization': 'Bearer {}'.format(accesstoken_endpointcheck)
-                }
+            }
             self.adminheaders = {
                 'Authorization': 'Bearer {}'.format(accesstoken_adminuser)
-                }
+            }
             self.generalheaders = {
                 'Authorization': 'Bearer {}'.format(accesstoken_generaluser)
-                }
+            }
             # self.db.create.all()
 
 # TEST FOR AUTHENICATION & ENDPOINT FUNCTIONALITY
@@ -88,7 +89,8 @@ class fun_api(unittest.TestCase):
             '/jokes',
             json={
                 'title': 'laugh',
-                'joke': 'two men walked into the bar, one named Peter, one named Palvo'
+                'joke': 'two men walked into the bar,\
+                     one named Peter, one named Palvo'
             },
             headers=self.endptheader)
         data = json.loads(res.data)
@@ -113,8 +115,9 @@ class fun_api(unittest.TestCase):
             '/jokes/15',
             headers=self.endptheader,
             json={
-                'joke': 'If i am down, what can I use to cheer myself up? You can take a seat'
-                })
+                'joke': 'If i am down, what can I use to cheer\
+                     myself up? You can take a seat'
+            })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -123,7 +126,9 @@ class fun_api(unittest.TestCase):
         self.assertTrue(data['joke'])
 
     def test_error_for_updating_joke(self):
-        res = self.client().patch('/joke/50', headers=self.endptheader, json={})
+        res = self.client().patch(
+            '/joke/50', headers=self.endptheader, json={}
+        )
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -150,7 +155,7 @@ class fun_api(unittest.TestCase):
 
 # #####---------------Riddles-----------------------------------------------
 
-    #Get riddle test
+    # Get riddle test
     def test_get_riddles(self):
         res = self.client().get('/riddle', headers=self.endptheader)
         data = json.loads(res.data)
@@ -167,7 +172,6 @@ class fun_api(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertTrue(data['message'], 'resource not found')
-
 
 # Post answer to riddle
 
@@ -202,7 +206,7 @@ class fun_api(unittest.TestCase):
             json={
                 'riddles': 'what do they call cash liquid?',
                 'answer': 'it makes you float'
-                })
+            })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -221,10 +225,13 @@ class fun_api(unittest.TestCase):
 # Update riddle
 
     def test_updating_riddle(self):
-        res = self.client().patch('/riddle/15', headers=self.endptheader,
-                                  json={
-                                      'riddle': 'what do they call cash liquid?',
-                                      'answer': 'Because it keeps you rest a-shored'})
+        res = self.client().patch(
+            '/riddle/15',
+            headers=self.endptheader,
+            json={
+                'riddle': 'what do they call cash liquid?',
+                'answer': 'Because it keeps you rest a-shored'
+            })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -233,7 +240,9 @@ class fun_api(unittest.TestCase):
         self.assertTrue(data['answer'])
 
     def test_error_for_updating_riddle(self):
-        res = self.client().patch('/riddle/20', headers=self.endptheader, json={})
+        res = self.client().patch(
+            '/riddle/20', headers=self.endptheader, json={}
+        )
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -282,7 +291,11 @@ class fun_api(unittest.TestCase):
     def test_post_proverb(self):
         res = self.client().post(
             '/proverbs', headers=self.endptheader,
-            json={'proverb': 'The goat that refuses to flee when he see a boil pot of water, should be ready to take a hot bath'})
+            json={
+                'proverb': 'The goat that refuses to flee \
+                    when he see a boil pot of water, should\
+                         be ready to take a hot bath'
+            })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -290,7 +303,9 @@ class fun_api(unittest.TestCase):
         self.assertTrue(data['proverb'])
 
     def test_error_for_posting_proverb(self):
-        res = self.client().post('/proverbs', headers=self.endptheader, json={})
+        res = self.client().post(
+            '/proverbs', headers=self.endptheader, json={}
+        )
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
@@ -304,7 +319,8 @@ class fun_api(unittest.TestCase):
             '/proverbs/15',
             headers=self.endptheader,
             json={
-                'proverb': 'the apple that falls all the branch shows he is ripe'
+                'proverb': 'the apple that falls all \
+                    the branch shows he is ripe'
             })
         data = json.loads(res.data)
 
@@ -313,7 +329,9 @@ class fun_api(unittest.TestCase):
         self.assertTrue(data['proverb'])
 
     def test_error_for_updating_proverb(self):
-        res = self.client().patch('/proverbs/50', headers=self.endptheader, json={})
+        res = self.client().patch(
+            '/proverbs/50', headers=self.endptheader, json={}
+        )
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -359,8 +377,9 @@ class fun_api(unittest.TestCase):
             headers=self.generalheaders,
             json={
                 'title': 'laugh',
-                'joke': 'two men walked into the bar, one named Peter, one named Pac'
-                })
+                'joke': 'two men walked into the bar\
+                    , one named Peter, one named Pac'
+            })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 401)
@@ -374,7 +393,8 @@ class fun_api(unittest.TestCase):
             '/jokes/15',
             headers=self.generalheaders,
             json={
-                'joke': 'If i am down, what can I use to cheer myself up? Take a seat'
+                'joke': 'If i am down, what can I use to cheer myself up?\
+                     Take a seat'
             })
         data = json.loads(res.data)
 
@@ -406,7 +426,11 @@ class fun_api(unittest.TestCase):
 
     def test_general_post_riddle(self):
         res = self.client().post('/riddle', headers=self.generalheaders,
-                                 json={'riddles': 'what do they call cash liquid?', 'answer': 'it makes you float', })
+                                 json={
+                                     'riddles': 'what do they call\
+                                          cash liquid?',
+                                     'answer': 'it makes you float'
+                                 })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 401)
@@ -416,8 +440,10 @@ class fun_api(unittest.TestCase):
 # post riddle answer
 
     def test_general_post_answer_to_riddle(self):
-        res = self.client().post('/riddle/4/answer', headers=self.generalheaders,
-                                 json={'answer': 'fingers'})
+        res = self.client().post(
+            '/riddle/4/answer', headers=self.generalheaders,
+            json={'answer': 'fingers'}
+        )
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -428,8 +454,14 @@ class fun_api(unittest.TestCase):
 
 # update riddle
     def test_general_updating_riddle(self):
-        res = self.client().patch('/riddle/15', headers=self.generalheaders,
-                                  json={'riddle': 'what do they call cash liquid?', 'answer': 'Because it keeps you rest a-shored'})
+        res = self.client().patch(
+            '/riddle/15',
+            headers=self.generalheaders,
+            json={
+                'riddle': 'what do they call cash liquid?',
+                'answer': 'Because it keeps \
+                        you rest a-shored'
+            })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 401)
@@ -446,7 +478,7 @@ class fun_api(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertTrue(data['message'], 'unauthorized')
 
-#----------------------
+# ----------------------
 
 # get proverbs
     def test_general_get_proverb(self):
@@ -463,8 +495,10 @@ class fun_api(unittest.TestCase):
             '/proverbs',
             headers=self.generalheaders,
             json={
-                'proverb': 'The goat that refuses to flee when he see a boil pot of water, should be ready to take a hot bath'
-                })
+                'proverb': 'The goat that refuses to flee when\
+                     he see a boil pot of water, should be \
+                         ready to take a hot bath'
+            })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 401)
@@ -474,7 +508,8 @@ class fun_api(unittest.TestCase):
 # update proverbs
     def test_general_updating_proverb(self):
         res = self.client().patch('/proverbs/15', headers=self.generalheaders,
-                                  json={'proverb': 'the apple that falls all the branch shows he is ripe'})
+                                  json={'proverb': 'the apple that\
+                                       falls all the branch shows he is ripe'})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 401)
@@ -490,7 +525,7 @@ class fun_api(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertTrue(data['message'], 'unauthorized')
 
-############ admin user
+# ########### admin user
 
 # get Jokes
 
@@ -509,7 +544,8 @@ class fun_api(unittest.TestCase):
             '/jokes',
             json={
                 'title': 'laugh',
-                'joke': 'two men walked into the bar, one named Peter, one named Palvo'
+                'joke': 'two men walked into \
+                    the bar, one named Peter, one named Palvo'
             },
             headers=self.adminheaders)
         data = json.loads(res.data)
@@ -525,8 +561,9 @@ class fun_api(unittest.TestCase):
             '/jokes/15',
             headers=self.adminheaders,
             json={
-                'joke': 'If i am down, what can I use to cheer myself up? You can take a seat'
-                })
+                'joke': 'If i am down, what can I \
+                    use to cheer myself up? You can take a seat'
+            })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -543,7 +580,7 @@ class fun_api(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(data['deleted'])
 
-#-------------------
+# -------------------
 
 # get riddle
     def test_admin_get_riddles(self):
@@ -574,7 +611,7 @@ class fun_api(unittest.TestCase):
             json={
                 'riddles': 'what do they call cash liquid?',
                 'answer': 'it makes you float'
-                })
+            })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -586,8 +623,10 @@ class fun_api(unittest.TestCase):
     def test_admin_updating_riddle(self):
         res = self.client().patch('/riddle/15', headers=self.adminheaders,
                                   json={
-                                      'riddle': 'what do they call cash liquid?',
-                                      'answer': 'Because it keeps you rest a-shored'})
+                                      'riddle': 'what do they \
+                                          call cash liquid?',
+                                      'answer': 'Because it \
+                                          keeps you rest a-shored'})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -603,7 +642,8 @@ class fun_api(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['deleted'])
-#----------------------
+
+# ----------------------
 
 # get proverbs
     def test_admin_get_proverb(self):
@@ -618,7 +658,8 @@ class fun_api(unittest.TestCase):
     def test_admin_post_proverb(self):
         res = self.client().post(
             '/proverbs', headers=self.adminheaders,
-            json={'proverb': 'The goat that refuses to flee when he see a boil pot of water, should be ready to take a hot bath'})
+            json={'proverb': 'The goat that refuses to lee when he \
+                see a boil pot of water, should be ready to take a hot bath'})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -631,7 +672,8 @@ class fun_api(unittest.TestCase):
             '/proverbs/15',
             headers=self.adminheaders,
             json={
-                'proverb': 'the apple that falls all the branch shows he is ripe'
+                'proverb': 'the apple that \
+                    falls all the branch shows he is ripe'
             })
         data = json.loads(res.data)
 
@@ -647,7 +689,6 @@ class fun_api(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['deleted'])
-
 
 
 if __name__ == '__main__':

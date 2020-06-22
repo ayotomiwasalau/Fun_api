@@ -74,6 +74,7 @@ def get_token_auth_header():
     except Exception:
         abort(401)
 
+
 def check_permissions(permission, payload):
     '''
     Function for authenticating permission of the user

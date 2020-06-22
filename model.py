@@ -7,7 +7,9 @@ import json
 # DB connect
 
 # database_name = "fun_api"
-# database_path = "postgres://{}:{}@{}/{}".format('postgres', 'P@ssw0rd123','localhost:5432', database_name)
+# database_path = "postgres://{}:{}@{}/{}".format(
+# 'postgres', 'P@ssw0rd123','localhost:5432', database_name
+# )
 
 db = SQLAlchemy()
 # migrate = Migrate()

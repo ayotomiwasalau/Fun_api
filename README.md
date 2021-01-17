@@ -1,5 +1,7 @@
 # Fun_Api
 
+### [Link to api](https://fun-apis.herokuapp.com/)
+
 Hello, welcome to Fun_API.
 
 Fun API allows you access fun contents such as jokes, riddles and African Proverbs.
